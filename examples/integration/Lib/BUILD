@@ -48,9 +48,18 @@ genrule(
     cmd = "echo 'public let greeting = \"Hello, world!\"' > $@",
 )
 
+genrule(
+    name = "gen-exported-symbols-list",
+    outs = ["exported-symbols.lds"],
+    cmd = "echo _hello > $@",
+)
+
 ios_framework(
     name = "LibFramework.iOS",
     bundle_id = "io.budilebuddy.LibFramework",
+    exported_symbols_lists = [
+        ":gen-exported-symbols-list",
+    ],
     extension_safe = True,
     families = ["iphone"],
     infoplists = ["Info.plist"],
